@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 1118896896}
   - component: {fileID: 1118896895}
   m_Layer: 0
-  m_Name: fwq
+  m_Name: Sphere2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
