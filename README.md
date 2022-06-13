@@ -6,3 +6,5 @@ Test_StencilShader For Silhouette
 ![image](https://user-images.githubusercontent.com/58582985/173260983-df5d5371-cdfe-4cdc-bcda-c21d25511042.png)
 
 ![image](https://user-images.githubusercontent.com/58582985/173261794-80684739-c259-4e87-833c-efa820a678f1.png)
+
+![image](https://user-images.githubusercontent.com/58582985/173262377-7626fde8-a2a9-4cc6-a6ae-634b93fc3b5b.png)
