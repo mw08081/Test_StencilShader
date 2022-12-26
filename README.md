@@ -9,21 +9,38 @@ Test_StencilShader For Silhouette
 
 ![image](https://user-images.githubusercontent.com/58582985/173262377-7626fde8-a2a9-4cc6-a6ae-634b93fc3b5b.png)
 
+----------------------
+# MP 프로젝트에 적용결과
 
-Ref가 3인 플레이어가 그려진 이후에 그려지는 오브젝트(Ref 2)들은 일단 항상 그려져야하므로 스텐실 비교함수가 Always이어야한다
-그렇다보니 Always에 의해 플레이어의 Ref값이 바로 덮어지게 된다 그렇기에 플레이어의 Ref는 어디에서도 찾아볼 수 없다(그림 1)
+### Ref Value : Player = 3, Obstruction = 2  
 
-그래서 나는 다음과 같이 생각했다 
-플레이어가 3, 장치가 2인 경우라고 가정했을때, 장치가 그려지면서 플레이어가 있는 부분은 ref를 2로 RePlace하고, 그렇지 않는 부분은 그대로 3을 그려넣도록 하면 되겠다 싶었다 (장치의 스텐셀 ref값도 쓰일 수 있기때문)
+#### Step 1
+Player(Ref 3)가 그려진 이후(sorting에 의해서 그려지는 순서가 결정된 것)에 그려지는 Obstruction(Ref 2)은 일단 항상 그려져야하므로 스텐실 비교함수가 Always이어야한다  
+그렇다보니 Always에 의해 플레이어의 Ref값이 바로 덮어지게 된다 그렇기에 플레이어의 Ref는 어디에서도 찾아볼 수 없다  
+```ShaderLab
+Stencil
+{
+  Ref 2
+  Comp Always
+  Pass Replace
+}
+```
+![img1](https://user-images.githubusercontent.com/58582985/209546864-136efb07-4e3c-472f-8abb-999b92cc6391.png)
 
-그런데 이렇게 할 경우 문제가 생긴다. 장치의 Ref(2)가 플레이어의 Ref(3)보다 작을 경우 Pass Replace 
+#### Step 2
+장치가 그려지면서 플레이어가 있는 부분은 ref를 2로 RePlace하고, 그렇지 않는 부분은 3 그대로 둔다 (이후에 장치의 스텐셀 ref값도 쓰일 수 있기때문)
+
+그런데 이렇게 할 경우 문제가 생긴다. Comp 함수가 Less이므로 Player가 있는 곳에만 Obstruction이 그려지는 것이다
+```ShaderLab
 Stencil
 {
 　　Ref 2
 　　Comp Less
 　　Pass Replace
 }
-한다면, 이미 장치는 플레이어가 있는 부분에만 그림이 그려진다(그림 2)
+```
+![img2](https://user-images.githubusercontent.com/58582985/209546867-c033ad73-0044-4be6-a5ee-78cb65d924fb.png)
+
 
 그래서 나는 다음과 같은 상황을 원했다 일단 그림은 다그려 (Comp Always)
 그리고 플레이어보다 Ref가 작으면 (Comp Less) 그곳만 스텐실 버퍼를 변경해(Pass Replace)
@@ -47,3 +64,6 @@ Stencil
 }
 
 그리고 Ref 1을 검출하는 필터, 2를 검출하는 필터 두개를 생성하면 되겠다(그림4)
+
+![img3](https://user-images.githubusercontent.com/58582985/209546874-3f48a838-aa0b-4ca7-bfc9-14a46fac906b.png)
+![img4](https://user-images.githubusercontent.com/58582985/209546878-d900f1e5-4747-434f-80a9-19cd9f6a90ee.png)
